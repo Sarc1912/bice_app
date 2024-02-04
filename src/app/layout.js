@@ -3,6 +3,7 @@ import "../../public/css/globals.css";
 import "../../public/css/style.css"
 import Aside from "./components/Aside";
 import Link from "next/link";
+import Footer from "./components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -77,8 +78,14 @@ export default function RootLayout({ children }) {
     <Aside />
 
         {children}
+
+    <div className="text-blue-gray-600">
+    <Footer />
     </div>
     </div>
+    </div>
+
+
       </body>
     </html>
   );

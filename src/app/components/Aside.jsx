@@ -49,11 +49,10 @@ function Aside(user) {
           </Link>
         </li>
         <li>
-          <Link href={{ pathname:"/dashboard" }}>
-            <button className={`middle none font-sans font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg  w-full flex items-center gap-4 px-4 capitalize ${pathname === '/agences' ? activeClasses : 'text-white hover:bg-white/10 active:bg-white/30'}`}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-5 h-5 text-inherit">
-                <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clip-rule="evenodd"></path>
-              </svg>
+          <Link href={{ pathname:"/agencies" }}>
+            <button className={`middle none font-sans font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg  w-full flex items-center gap-4 px-4 capitalize ${pathname === '/agencies' ? activeClasses : 'text-white hover:bg-white/10 active:bg-white/30'}`}>
+            
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true" className="w-5 h-5 text-inherit"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs> </defs> <title></title> <g id="Card"> <path class="cls-1" d="M21,4.93h0L12.32,2.05a1,1,0,0,0-.61,0l-9,2.75A1,1,0,0,0,2,5.57,1.06,1.06,0,0,0,1.93,6V9A1.07,1.07,0,0,0,3,10.07H5V17H3a1,1,0,0,0-1,1v3a1,1,0,0,0,1,1H21a1,1,0,0,0,1-1V18a1,1,0,0,0-1-1H19V10.07h2A1.07,1.07,0,0,0,22.07,9V6A1.07,1.07,0,0,0,21,4.93ZM12,4l2.64.88H9.1Zm-5,6H8V17H7ZM13,17V10.07h1V17Zm-2,0H10V10.07h1Zm9,3H4V19H20Zm-3-3H16V10.07h1Zm2.93-9.07H4.07V7.07H19.93Z"></path> </g> </g></svg>
               <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-medium capitalize">Agencias</p>
             </button>
           </Link>

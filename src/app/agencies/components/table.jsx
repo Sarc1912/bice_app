@@ -1,3 +1,4 @@
+import {Edit, Disable} from '@/app/components/Buttons'
 import React from 'react'
 
 function DinamicTable() {
@@ -28,30 +29,30 @@ function DinamicTable() {
 	</span>
 	)
 
-
+	const value = 1;
   return (
     <>
 	<thead>
 		<tr>
 			<th
 				class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-				Dispositivo
+				Ubicacion
 			</th>
 			<th
 				class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-				Ubicación
+				Cod. Agencia
 			</th>
 			<th
 				class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-				Dirección IP
-			</th>
-			<th
-				class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-				Proveedor
+				Extension
 			</th>
 			<th
 				class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
 				Status
+			</th>
+			<th
+				class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+				Acciones
 			</th>
 		</tr>
 	</thead>
@@ -75,12 +76,15 @@ function DinamicTable() {
 				</p>
 			</td>
 			<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-				<p class="text-gray-900 whitespace-no-wrap">
-					Movistar
-				</p>
-			</td>
-			<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
 				{active}
+			</td>
+			<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm flex space-x-3">
+				<p class="text-gray-900 whitespace-no-wrap">
+					<Edit link={`agencies/${value}`} />
+				</p>
+				<p className='text-black'>
+					<Disable id={value} />
+				</p>
 			</td>
 		</tr>
 	</tbody>

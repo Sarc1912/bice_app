@@ -1,12 +1,14 @@
 import React from 'react'
 import DinamicTable from './components/table'
+import Link from 'next/link'
 
-function Devices() {
+function page() {
   return (
-	<div className="bg-white p-8 rounded-md w-full">
+    <>
+    	<div className="bg-white p-8 rounded-md w-full">
 	<div className=" flex items-center justify-between pb-6">
 		<div>
-			<h2 className="text-gray-600 font-semibold">Dispositivos en la red</h2>
+			<h2 className="text-gray-600 font-semibold">Agencias a nivel nacional</h2>
 		</div>
 		<div className="flex items-center justify-between">
 			<div className="flex bg-gray-50 items-center p-2 rounded-md">
@@ -19,8 +21,9 @@ function Devices() {
 				<input className="bg-gray-50 outline-none ml-1 block " type="text" name="" id="" placeholder="search..." />
           </div>
 				<div className="lg:ml-40 ml-10 space-x-8">
-					<button className="bg-gradient-to-tr from-red-600 to-red-400 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">New Report</button>
-					<button className="bg-gradient-to-tr from-red-600 to-red-400 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">Create</button>
+          <Link href={"/agencies/add"}>
+          <button className="bg-gradient-to-tr from-red-600 to-red-400 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">Registrar Agencia</button>
+          </Link>
 				</div>
 			</div>
 		</div>
@@ -51,7 +54,8 @@ function Devices() {
 			</div>
 		</div>
 	</div>
+    </>
   )
 }
 
-export default Devices
+export default page
