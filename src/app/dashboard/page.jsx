@@ -1,5 +1,4 @@
 import React from 'react'
-import Aside from './components/Aside'
 import Links from './components/Links'
 import Graph from './components/Graph'
 
@@ -29,7 +28,6 @@ function Dashboard() {
 
   return (
 <>
-  <Aside />
     <div className="mt-12">
       <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
       <Links links={links} />
