@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int    @id @default(autoincrement())
+  estatus_usuario EstatusUsuario @relation(fields: [estatusUsuarioId], references: [cod_estatus_usuario])
+  estatusUsuarioId Int
+  correo         String
+  clave          String
+  tipo_usuario   TipoUsuario @relation(fields: [tipoUsuarioId], references: [id_tipo_usuario])
+  tipoUsuarioId  Int
+  cargo          Cargo @relation(fields: [cargoId], references: [id_cargo])
+  cargoId        Int
+  usuario        String
+  area           Area @relation(fields: [areaId], references: [id_area])
+  areaId         Int
+
+  @@map("tbl_usuarios")
+}
+
+model Area {
+  id_area Int    @id @default(autoincrement())
+  descr_area  String
+  users User[]
+
+  @@map("tbl_areas")
+}
+
+model Cargo {
+  id_cargo Int    @id @default(autoincrement())
+  descr_cargo  String
+  users User[]
+
+  @@map("tbl_cargos")
+}
+
+model TipoUsuario {
+  id_tipo_usuario Int    @id @default(autoincrement())
+  descr_tipo_usuario  String
+  users User[]
+
+  @@map("tbl_tipo_usuario")
+}
+
+model EstatusUsuario {
+  cod_estatus_usuario Int    @id @default(autoincrement())
+  descr_estatus  String
+  users User[]
+
+  @@map("tbl_estatus_usuario")
+}

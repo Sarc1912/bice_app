@@ -1,15 +1,48 @@
 "use client"
 
-import { faCoffee, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { useState } from "react";
+import Toastify from "toastify";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [button, setButton] = useState("");
-  const [showPass, setShowPass] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true); // Deshabilita el botón
+  
+    fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data)
+      if(data.error){
+        console.log(data.error)
+        Toastify.error('Error', data.error);
+      }else[
+        localStorage.setItem("token", data.token),
+        localStorage.setItem("userData", JSON.stringify(data.user)),
+        window.location.href="/dashboard"
+      ]
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    .finally(() => {
+      setIsLoading(false); // Habilita el botón
+    });
+  };
 
   return (
     <>
@@ -36,7 +69,7 @@ telecomunicaciones alámbricas e inalámbricas</p>
         </div>
         <div className="flex w-full lg:w-1/2 justify-center items-center bg-white space-y-8">
           <div className="w-full px-8 md:px-32 lg:px-24">
-            <form className="bg-white rounded-md shadow-2xl p-5">
+            <form className="bg-white rounded-md shadow-2xl p-5" onSubmit={handleSubmit}>
               <h1 className="text-gray-800 font-bold text-2xl mb-1">
                 Iniciar Sesión
               </h1>
@@ -93,8 +126,9 @@ telecomunicaciones alámbricas e inalámbricas</p>
               <button
                 type="submit"
                 className="block w-full bg-red-600 mt-5 py-2 rounded-2xl hover:bg-red-700 hover:-translate-y-1 transition-all duration-500 text-white font-semibold mb-2"
+                disabled={isLoading}
               >
-                Iniciar Sesión
+                {isLoading ? 'Cargando...' : 'Iniciar sesión'}
               </button>
             </form>
           </div>
