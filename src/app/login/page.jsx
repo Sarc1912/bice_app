@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useState } from "react";
-import Toastify from "toastify";
+import { toast } from 'react-toastify';
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -26,18 +26,18 @@ function Login() {
     })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data)
       if(data.error){
-        console.log(data.error)
-        Toastify.error('Error', data.error);
-      }else[
+        console.log(data.error),
+        toast.error('Error: ' + data.error);
+      }else{
         localStorage.setItem("token", data.token),
         localStorage.setItem("userData", JSON.stringify(data.user)),
         window.location.href="/dashboard"
-      ]
+      }
     })
     .catch((error) => {
       console.error('Error:', error);
+      toast.error('Error: ' + data.error);
     })
     .finally(() => {
       setIsLoading(false); // Habilita el botón

@@ -3,8 +3,6 @@
 import Link from 'next/link'
 import React from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-
-
 function Aside(user) {
 
   const activeClasses = "bg-gradient-to-tr from-red-600 to-red-400 text-white shadow-md shadow-red-500/20 hover:shadow-lg hover:shadow-red-500/40 active:opacity-[0.85]";

@@ -7,6 +7,8 @@ import Aside from "./components/Aside";
 import Link from "next/link";
 import Footer from "./components/Footer";
 import { useEffect, useState } from "react";
+import { toast } from 'react-toastify';
+
 
 const inter = Inter({ subsets: ["latin"] });
 

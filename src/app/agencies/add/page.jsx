@@ -4,6 +4,17 @@ import { Select, SelectItem } from "@nextui-org/react";
 import React, { useState } from "react";
 
 function Add() {
+  const [selectedValue, setSelectedValue] = useState(null)
+
+  const [place, setPlace] = useState("")
+  const [name, setName] = useState("");
+  const [cod, setCode] = useState("");
+  const [ext, setExt] = useState("");
+  const [state, setState] = useState("")
+  const [mun, setMun] = useState("")
+  const [isLoading, setIsLoading] = useState(false);
+
+
   const estados = [
     { value: 1, label: "Caracas" },
     { value: 2, label: "Valencia" },
@@ -16,7 +27,48 @@ function Add() {
     { value: 3, label: "Algo" },
   ];
 
-  const [selectedValue, setSelectedValue] = useState(null)
+  const handleChangeState = (event) => {
+    setState(event.target.value);
+  };
+
+  const handleChangeMun = (event) => {
+    setMun(event.target.value);
+  };
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true); // Deshabilita el botón
+  
+    fetch('/api/auth/addAgency', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        estado: state,
+        municipio: mun,
+        ubicacion: place,
+        nombre_Agencia: name,
+        cod_agencia: cod,
+        extension: ext
+      }),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      if(data.error){
+        console.log(data.error)
+      }else{
+        window.location.href="/dashboard"
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    .finally(() => {
+      setIsLoading(false); // Habilita el botón
+    });
+  };
 
   return (
     <div>
@@ -30,9 +82,9 @@ function Add() {
       <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
       <Select
       isRequired
-      placeholder={selectedValue ? '' : 'Selecciona un estado'}
-      value={selectedValue}
-      onChange={setSelectedValue}
+      placeholder={state ? '' : 'Selecciona un estado'}
+      value={state}
+      onChange={handleChangeState}
       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       size={"sm"}
 
@@ -40,7 +92,7 @@ function Add() {
     >
       {estados.map((estado) => (
         <SelectItem key={estado.value} value={estado.value} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-          {`${estado.label}`}
+          {`___${estado.label}`}
         </SelectItem>
       ))}
     </Select>
@@ -49,9 +101,9 @@ function Add() {
     <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
       <Select
       isRequired
-      placeholder={selectedValue ? '' : 'Selecciona un Municipio'}
-      value={selectedValue}
-      onChange={setSelectedValue}
+      placeholder={mun ? '' : 'Selecciona un Municipio'}
+      value={mun}
+      onChange={handleChangeMun}
       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       size={"sm"}
 
@@ -59,29 +111,32 @@ function Add() {
     >
       {municipios.map((municipio) => (
         <SelectItem key={municipio.value} value={municipio.value} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-          {`${municipio.label}`}
+          {`___${municipio.label}`}
         </SelectItem>
       ))}
     </Select>
     </div>
-              <label htmlFor="Ubicacion"  className="text-black">Ubicacion</label>
+              <label htmlFor="Ubicacion"  className="text-black">Ubicación</label>
               <input
                 type="text"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="Ubicacion"
-              />
+                placeholder="Ej. Frente a Farmatodo"
+              value={place} onChange={(e)=>setPlace(e.target.value)} required/>
             </form>
           </div>
 
           {/* Bloque de Datos Agencia */}
           
           <div class="bg-white gap-2 p-4 rounded-xl">
+            <form onSubmit={handleSubmit}>
             <div>
             <strong className="text-black">Datos de la agencia</strong><br />
-            <label htmlFor="NomAgencia"  className="text-black">Nombre de la gencia</label>
+            <label htmlFor="NomAgencia"  className="text-black">Nombre de la agencia</label>
               <input
                 type="text"
                 style={{ width:350 }}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="NomAgencia" placeholder="Ej. Agencia San Cristobal"
+                required value={name} onChange={(e)=>setName(e.target.value)}
               />
                 <div className="flex flex-wrap mt-4 space-x-2 ">
                   <div className="w-1/2 text-black ml-2">
@@ -89,7 +144,7 @@ function Add() {
 
                   </div>
                   <div className="w-2/2 text-black ml-2">
-                  Extension
+                  Extensión
 
                   </div>
 
@@ -97,18 +152,19 @@ function Add() {
                 <input
                 type="text"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="CodAgencia" placeholder="Ej. 301"
-              /></div>
+                required value={cod} onChange={(e)=>setCode(e.target.value)}/></div>
 
               <div className="w-2/2">
 
               <input
                 type="text"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="Ext" placeholder="Ej. 000000"
-              />
+                required value={ext} onChange={(e)=>setExt(e.target.value)}/>
               </div>
               <button className="bg-gradient-to-tr from-red-600 to-red-400 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer mt-3">Guardar</button>
                 </div>
             </div>
+            </form>
           </div>
         </div>
         <div className="bg-white gap-1 p-4 rounded-xl mt-5">

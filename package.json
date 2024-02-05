@@ -22,6 +22,7 @@
     "prisma": "^5.9.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-toastify": "^10.0.4",
     "toast": "^0.5.4",
     "toastify": "^2.0.1"
   },

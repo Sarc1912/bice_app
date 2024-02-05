@@ -1,15 +1,21 @@
+"use client"
+
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 
 function page() {
+    const [user, setUser] = useState("")
 
-  const user = {
-    name: "Sarc Sarquen",
-    username:"sarc@gmail.com",
-    position:"Gerente",
-    permission:"all"
-}
+    useEffect(() => {
+        const userData = localStorage.getItem("userData")
+
+      if (userData !== null) {
+        setUser(JSON.parse(userData))
+      }
+    }, []);
+
+    console.log(user)
 
   return (
 <div>
@@ -30,21 +36,21 @@ function page() {
                         className="text-sm border bg-blue-50 font-bold uppercase border-2 rounded-l px-4 py-2 bg-gray-50 whitespace-no-wrap w-2/6 text-black">Nombre:</span>
                     <input 
                         className="px-4 border-l-0 cursor-default border-gray-300 focus:outline-none  rounded-md rounded-l-none shadow-sm -ml-1 w-4/6 text-black"
-                        type="text" value={user.name}  readonly/>
+                        type="text" value={user.usuario}  readonly/>
                 </div>
                 <div className="flex ">
                     <span
                         className="text-sm border bg-blue-50 font-bold uppercase border-2 rounded-l px-4 py-2 bg-gray-50 whitespace-no-wrap w-2/6 text-black">Correo:</span>
                     <input 
                         className="px-4 border-l-0 cursor-default border-gray-300 focus:outline-none  rounded-md rounded-l-none shadow-sm -ml-1 w-4/6 text-black"
-                        type="text" value={user.username} readonly/>
+                        type="text" value={user.correo} readonly/>
                 </div>
                  <div className="flex ">
                     <span
                         className="text-sm border bg-blue-50 font-bold uppercase border-2 rounded-l px-4 py-2 bg-gray-50 whitespace-no-wrap w-2/6 text-black">Cargo:</span>
                     <input 
                         className="px-4 border-l-0 cursor-default border-gray-300 focus:outline-none  rounded-md rounded-l-none shadow-sm -ml-1 w-4/6 text-black"
-                        type="text" value={user.position}  readonly/>
+                        type="text" value={user.cargo}  readonly/>
                 </div>
         </div>
         <div className="md:col-span-3 h-48 shadow-xl p-4 space-y-2 hidden md:block">
