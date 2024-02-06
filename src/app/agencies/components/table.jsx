@@ -1,7 +1,23 @@
+"use client"
+
 import {Edit, Disable} from '@/app/components/Buttons'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 function DinamicTable() {
+	const [agencys, setAgencys] = useState(null);
+
+
+	useEffect(() => {
+		const fetchAgency = async () => {
+		  const res = await fetch('/api/agency/searchAgency');
+		  const data = await res.json();
+		  console.log(data)
+		  setAgencys(data);
+		};
+	
+		fetchAgency();
+	  }, []);
+
 	const active = (
 		<span
 		class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
@@ -29,11 +45,14 @@ function DinamicTable() {
 	</span>
 	)
 
-	const value = 1;
-  return (
+	return (
     <>
 	<thead>
 		<tr>
+			<th
+				class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+				Nombre Agencia
+			</th>
 			<th
 				class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
 				Ubicacion
@@ -57,36 +76,73 @@ function DinamicTable() {
 		</tr>
 	</thead>
 	<tbody>
-		<tr>
+
+	{/* {
+      id_agencia: 3,
+      nombre_agencia: 'asdasdas',
+      cod_oficina: 300,
+      descr_estatus_agencia: 'Activa',
+      direccion: 'adadas',
+      extensionn: 123
+    }, */}
+		{agencys && agencys.map((agency) => (
+		<tr key={agency.id_agencia}>
 			<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
 				<div class="flex items-center">
-						<div class="ml-3">
-							<p class="text-gray-900 whitespace-no-wrap">
-								TPLink a5553
-							</p>
-						</div>
+					<div class="ml-3">
+						<p class="text-gray-900 whitespace-no-wrap">
+						{agency.nombre_agencia}
+						</p>
 					</div>
+				</div>
 			</td>
 			<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-				<p class="text-gray-900 whitespace-no-wrap">Agencia 553</p>
+				<div class="flex items-center">
+					<div class="ml-3">
+						<p class="text-gray-900 whitespace-no-wrap">
+						{agency.direccion}						</p>
+					</div>
+				</div>
+			</td>
+
+			<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+				<div class="flex items-center">
+					<div class="ml-3">
+						<p class="text-gray-900 whitespace-no-wrap">
+						{agency.cod_oficina}</p>
+					</div>
+				</div>
+			</td>
+
+			<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+				<div class="flex items-center">
+					<div class="ml-3">
+						<p class="text-gray-900 whitespace-no-wrap">
+						{agency.extensionn === null ? "N/A" : agency.extensionn}
+						</p>
+					</div>
+				</div>
 			</td>
 			<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-				<p class="text-gray-900 whitespace-no-wrap">
-					10.0.0.0
-				</p>
-			</td>
-			<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-				{active}
+				<div class="flex items-center">
+					<div class="ml-3">
+						<p class="text-gray-900 whitespace-no-wrap">
+						{agency.descr_estatus_agencia === "Activa" ? active : inactive}
+						</p>
+					</div>
+				</div>
 			</td>
 			<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm flex space-x-3">
 				<p class="text-gray-900 whitespace-no-wrap">
-					<Edit link={`agencies/${value}`} />
+					<Edit link={`agencies/${agency.id_agencia}`} />
 				</p>
 				<p className='text-black'>
-					<Disable id={value} />
+					<Disable id={agency.id_agencia} />
 				</p>
 			</td>
 		</tr>
+			))}
+
 	</tbody>
     </>
   )

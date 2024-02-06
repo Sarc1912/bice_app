@@ -40,18 +40,18 @@ function Add() {
     e.preventDefault();
     setIsLoading(true); // Deshabilita el botón
   
-    fetch('/api/auth/addAgency', {
+    fetch('/api/agency/addAgency', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        estado: state,
-        municipio: mun,
+        estado: parseInt(state),
+        municipio: parseInt(mun),
         ubicacion: place,
         nombre_Agencia: name,
-        cod_agencia: cod,
-        extension: ext
+        cod_agencia: parseInt(cod),
+        extension: parseInt(ext)
       }),
     })
     .then((response) => response.json())
@@ -59,7 +59,7 @@ function Add() {
       if(data.error){
         console.log(data.error)
       }else{
-        window.location.href="/dashboard"
+        console.log(data)
       }
     })
     .catch((error) => {
@@ -145,23 +145,22 @@ function Add() {
                   </div>
                   <div className="w-2/2 text-black ml-2">
                   Extensión
-
                   </div>
 
                 <div className="w-1/2">
                 <input
-                type="text"
+                type="number"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="CodAgencia" placeholder="Ej. 301"
                 required value={cod} onChange={(e)=>setCode(e.target.value)}/></div>
 
               <div className="w-2/2">
 
               <input
-                type="text"
+                type="number"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="Ext" placeholder="Ej. 000000"
                 required value={ext} onChange={(e)=>setExt(e.target.value)}/>
               </div>
-              <button className="bg-gradient-to-tr from-red-600 to-red-400 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer mt-3">Guardar</button>
+              <button className="bg-gradient-to-tr from-red-600 to-red-400 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer mt-3">{isLoading ? 'Cargando...' : 'Guardar'}</button>
                 </div>
             </div>
             </form>
