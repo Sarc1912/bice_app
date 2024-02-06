@@ -2,6 +2,7 @@
 
 import { Select, SelectItem } from "@nextui-org/react";
 import React, { useState } from "react";
+import addDevices from "@/app/devices/components/AddDevices";
 
 function Add() {
   const [selectedValue, setSelectedValue] = useState(null)
@@ -16,16 +17,13 @@ function Add() {
 
 
   const estados = [
-    { value: 1, label: "Caracas" },
-    { value: 2, label: "Valencia" },
-    { value: 3, label: "Lara" },
+    { value: 1, label: "Miranda" },
   ];
 
   const municipios = [
-    { value: 1, label: "Sucre" },
-    { value: 2, label: "Petare" },
-    { value: 3, label: "Algo" },
+    { value: 1, label: "Chacao" },
   ];
+
 
   const handleChangeState = (event) => {
     setState(event.target.value);
@@ -168,7 +166,7 @@ function Add() {
         </div>
         <div className="bg-white gap-1 p-4 rounded-xl mt-5">
           <p className="text-black">Dispositivos en la Agencia</p>
-          
+            <addDevices />
         </div>
       </div>
     </div>
