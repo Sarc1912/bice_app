@@ -23,6 +23,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-toastify": "^10.0.4",
+    "sweetalert2": "^11.10.5",
     "toast": "^0.5.4",
     "toastify": "^2.0.1"
   },

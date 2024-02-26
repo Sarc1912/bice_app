@@ -82,17 +82,20 @@ const nav = (
   return (
     <html lang="en">
       <body className={inter.className} user={user}>
-      <div className="min-h-screen bg-black-50/50">
-  {isAuthenticated ? <Aside user = {user} /> : null}  
-  <div className="p-4 xl:ml-80">
-    {isAuthenticated ? nav : null}
-        {children}
 
-    <div className="text-blue-gray-600">
-    <Footer />
+
+  {isAuthenticated ? (
+          <div className="min-h-screen bg-black-50/50">
+            <Aside user = {user} />
+          <div className="p-4 xl:ml-80">
+            {nav}
+            {children}
+            <div className="text-blue-gray-600">
+      <Footer />
     </div>
-    </div>
-    </div>
+          </div>
+          </div>
+  ) : [children]}
 
 
       </body>
