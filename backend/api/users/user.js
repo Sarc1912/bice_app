@@ -4,9 +4,7 @@ const { request, response } = require('express');
 const { SignUser } = require("../functions/functions");
 
 const GetAllUsers = (request, response)=>{
-
     const {token, cargo, tipo_u} = request.body;
-
     const auth = SignUser(token, cargo, tipo_u)
 
     if (auth) {
@@ -17,19 +15,48 @@ const GetAllUsers = (request, response)=>{
                 const users = result.rows
                 response.status(200).json({ users: users });
             }
-
-
         })
-
-
     }else{
-        return response.status(401).json({ error: 'Su usuario no tiene suficientes privilegios para realizar esta acción.' });
-
+        return response.status(401).json({ error: 'Su usuario no tiene suficientes privilegios para realizar esta acción' });
     }
+}
 
+const Cargo = (request, response)=>{
+    const {token, cargo, tipo_u} = request.body;
+    const auth = SignUser(token, cargo, tipo_u)
 
+    if(auth){
+        pool.query("Select * from tbl_cargos",(error, result)=>{
+            if (error) {
+                response.status(500).json({ error: 'Ha ocurrido un error, intente mas tarde.' });
+            }else{
+                response.status(200).json({cargos:result.rows})
+            }
+        })
+    }else{
+        return response.status(401).json({ error: 'Su usuario no tiene suficientes privilegios para realizar esta acción' });
+    }
+}
+
+const TipoUsuario = (request, response)=>{
+    const {token, cargo, tipo_u} = request.body;
+    const auth = SignUser(token, cargo, tipo_u)
+
+    if(auth){
+        pool.query("Select * from tbl_tipo_usuario",(error, result)=>{
+            if (error) {
+                response.status(500).json({ error: 'Ha ocurrido un error, intente mas tarde.' });
+            }else{
+                response.status(200).json({type_u:result.rows})
+            }
+        })
+    }else{
+        return response.status(401).json({ error: 'Su usuario no tiene suficientes privilegios para realizar esta acción' });
+    }
 }
 
 module.exports = {
-    GetAllUsers
+    GetAllUsers,
+    Cargo,
+    TipoUsuario
 }

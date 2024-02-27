@@ -31,5 +31,8 @@ app.get('/', (request, response) => {
 app.post("/auth/login", auth.login);
 app.post("/auth/register", auth.register);
 app.get("/devices", device.getDevices);
-app.post("/users/", user.GetAllUsers)
+app.post("/users/", user.GetAllUsers);
+app.post("/cargos/", user.Cargo );
+app.post("/type_u/", user.TipoUsuario );
+
 //EndRoutes
