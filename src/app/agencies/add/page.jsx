@@ -1,36 +1,77 @@
 "use client";
 
 import { Select, SelectItem } from "@nextui-org/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import addDevices from "@/app/devices/components/AddDevices";
 
 function Add() {
   const [selectedValue, setSelectedValue] = useState(null)
-
   const [place, setPlace] = useState("")
   const [name, setName] = useState("");
   const [cod, setCode] = useState("");
   const [ext, setExt] = useState("");
   const [state, setState] = useState("")
-  const [mun, setMun] = useState("")
+  const [selectedState, setSelectedState] = useState()
+  const [mun, setMun] = useState("");
+  const [selectedMun, setSelectedMun] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("userData"))
+    const token = localStorage.getItem("token")
 
-  const estados = [
-    { value: 1, label: "Miranda" },
-  ];
+    const fetchData = async () => {
+      const response = await fetch('http://localhost:3001/states', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            tipo_u: userData.tipoUsuario,
+            cargo: userData.cargo,
+            token: token,
+        }),
+      });
+      const data = await response.json();
 
-  const municipios = [
-    { value: 1, label: "Chacao" },
-  ];
+      setState(data.estados)
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("userData"))
+    const token = localStorage.getItem("token")
+
+    const fetchData = async () => {
+      const response = await fetch('http://localhost:3001/municipalities', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            tipo_u: userData.tipoUsuario,
+            cargo: userData.cargo,
+            token: token,
+            state: selectedState
+        }),
+      });
+      const data = await response.json();
+      console.log(data)
+      setMun(data.municipios)
+    };
+
+    fetchData();
+  }, [state, selectedState]);
 
 
   const handleChangeState = (event) => {
-    setState(event.target.value);
+    setSelectedState(event.target.value);
   };
 
   const handleChangeMun = (event) => {
-    setMun(event.target.value);
+    setSelectedMun(event.target.value);
   };
 
 
@@ -80,17 +121,21 @@ function Add() {
       <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
       <Select
       isRequired
-      placeholder={state ? '' : 'Selecciona un estado'}
-      value={state}
+      placeholder={selectedState ? '' : 'Selecciona un estado'}
+      value={selectedState}
       onChange={handleChangeState}
       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       size={"sm"}
+      scrollShadowProps={{
+        isEnabled: true
+      }}
+
 
       style={{ width:350 }}
     >
-      {estados.map((estado) => (
-        <SelectItem key={estado.value} value={estado.value} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-          {`___${estado.label}`}
+      {state && state.map((estado) => (
+        <SelectItem key={estado.id_estado} value={estado.estado} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          {`${estado.estado}`}
         </SelectItem>
       ))}
     </Select>
@@ -99,17 +144,18 @@ function Add() {
     <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
       <Select
       isRequired
-      placeholder={mun ? '' : 'Selecciona un Municipio'}
-      value={mun}
+      placeholder={selectedMun ? '' : 'Selecciona un Municipio'}
+      value={selectedMun}
       onChange={handleChangeMun}
       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       size={"sm"}
 
       style={{ width:350 }}
     >
-      {municipios.map((municipio) => (
-        <SelectItem key={municipio.value} value={municipio.value} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-          {`___${municipio.label}`}
+
+      {mun && mun.map((municipio) => (
+        <SelectItem key={municipio.id_municipio} value={municipio.municipio} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          {`${municipio.municipio}`}
         </SelectItem>
       ))}
     </Select>
@@ -163,10 +209,6 @@ function Add() {
             </div>
             </form>
           </div>
-        </div>
-        <div className="bg-white gap-1 p-4 rounded-xl mt-5">
-          <p className="text-black">Dispositivos en la Agencia</p>
-            <addDevices />
         </div>
       </div>
     </div>

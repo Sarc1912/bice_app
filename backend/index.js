@@ -9,6 +9,7 @@ const port = 3001
 const auth = require("./api/auth/authController")
 const device = require("./api/devices/device")
 const user = require("./api/users/user")
+const agency = require("./api/agency/agencyController")
 
 //EndImports
 app.use(cors())
@@ -34,5 +35,9 @@ app.get("/devices", device.getDevices);
 app.post("/users/", user.GetAllUsers);
 app.post("/cargos/", user.Cargo );
 app.post("/type_u/", user.TipoUsuario );
+app.post("/areas/", user.Area );
+app.post("/updUsers/", user.UpdUser );
+app.post("/states/", agency.States);
+app.post("/municipalities/", agency.municipalities)
 
 //EndRoutes
