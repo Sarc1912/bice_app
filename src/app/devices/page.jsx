@@ -1,7 +1,20 @@
-import React from 'react'
+'use client'
+
+import React, { useState } from 'react'
 import DinamicTable from './components/table'
+import ModalDevice from './components/ModalDevices'
 
 function Devices() {
+	const [isOpen, setIsOpen] = useState(false);
+
+	const onOpen = () => {
+		setIsOpen(true);
+	  };
+	
+	  const onOpenChange = (isOpen) => {
+		setIsOpen(isOpen);
+	  };
+
   return (
 	<div className="bg-white p-8 rounded-md w-full">
 	<div className=" flex items-center justify-between pb-6">
@@ -19,8 +32,7 @@ function Devices() {
 				<input className="bg-gray-50 outline-none ml-1 block " type="text" name="" id="" placeholder="search..." />
           </div>
 				<div className="lg:ml-40 ml-10 space-x-8">
-					<button className="bg-gradient-to-tr from-red-600 to-red-400 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">New Report</button>
-					<button className="bg-gradient-to-tr from-red-600 to-red-400 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">Create</button>
+					<button onClick={() => onOpen()} className="bg-gradient-to-tr from-red-600 to-red-400 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">Registrar Dispositivo</button>
 				</div>
 			</div>
 		</div>
@@ -29,24 +41,9 @@ function Devices() {
 				<div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
 					<table className="min-w-full leading-normal">
 							<DinamicTable />
+							<ModalDevice isOpen={isOpen} onOpenChange={onOpenChange} />
+
 					</table>
-					<div
-						className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
-						<span className="text-xs xs:text-sm text-gray-900">
-                            Showing 1 to 4 of 50 Entries
-                        </span>
-						<div className="inline-flex mt-2 xs:mt-0">
-							<button
-                                className="text-sm text-indigo-50 transition duration-150 hover:bg-indigo-500 bg-gradient-to-tr from-red-600 to-red-400 font-semibold py-2 px-4 rounded-l">
-                                Prev
-                            </button>
-							&nbsp; &nbsp;
-							<button
-                                className="text-sm text-indigo-50 transition duration-150 hover:bg-indigo-500 bg-gradient-to-tr from-red-600 to-red-400 font-semibold py-2 px-4 rounded-r">
-                                Next
-                            </button>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>

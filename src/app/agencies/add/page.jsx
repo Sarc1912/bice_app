@@ -3,9 +3,9 @@
 import { Select, SelectItem } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import addDevices from "@/app/devices/components/AddDevices";
+import Swal from "sweetalert2";
 
 function Add() {
-  const [selectedValue, setSelectedValue] = useState(null)
   const [place, setPlace] = useState("")
   const [name, setName] = useState("");
   const [cod, setCode] = useState("");
@@ -15,6 +15,7 @@ function Add() {
   const [mun, setMun] = useState("");
   const [selectedMun, setSelectedMun] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [extComp, setExtComp] = useState("");
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("userData"))
@@ -58,7 +59,6 @@ function Add() {
         }),
       });
       const data = await response.json();
-      console.log(data)
       setMun(data.municipios)
     };
 
@@ -78,42 +78,69 @@ function Add() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true); // Deshabilita el botón
-  
-    fetch('/api/agency/addAgency', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        estado: parseInt(state),
-        municipio: parseInt(mun),
-        ubicacion: place,
-        nombre_Agencia: name,
-        cod_agencia: parseInt(cod),
-        extension: parseInt(ext)
-      }),
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      if(data.error){
-        console.log(data.error)
-      }else{
-        console.log(data)
-      }
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    })
-    .finally(() => {
-      setIsLoading(false); // Habilita el botón
-    });
+
+    const userData = JSON.parse(localStorage.getItem("userData"))
+	
+    const token = localStorage.getItem("token")
+
+
+    fetch('http://localhost:3001/addAgencies', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                tipo_u: userData.tipoUsuario,
+                cargo: userData.cargo,
+                token: token,
+                state:parseInt(selectedState),
+                mun: parseInt(selectedMun),
+                place: place,
+                name: name,
+                cod: cod,
+                ext: parseInt(ext),
+                extComp: extComp
+              }),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+              if(data.error){
+                Swal.fire({
+                  title: data.error,
+                  icon: 'error',
+                  confirmButtonText: 'Cerrar'
+                })
+              }else{
+                Swal.fire({
+                    title: "Su agencia ha sido registrado exitosamente.",
+                    text: "Será redireccionado en breve.",
+                    icon: 'success',
+                    confirmButtonText: 'Cerrar'
+                  })
+                  setTimeout(function(){
+                    window.location.href = "/agencies";
+                  }, 3000);   
+              }
+            })
+            .catch((error) => {
+              Swal.fire({
+                title: 'Error!',
+                text: 'Ha ocurrido un error, por favor intente mas tarde',
+                icon: 'error',
+                confirmButtonText: 'Cerrar'
+              })
+            })
+            .finally(() => {
+              setIsLoading(false); // Habilita el botón
+            });
+
   };
 
   return (
     <div>
       <div class="w-full">
         <h1 class="text-2xl font-semibold">Agregar Agencia</h1>
-        <div class="md:flex mt-4 space-x-4  justify-center">
+        <div class="md:flex mt-5 space-x-4  justify-center">
           <div class="bg-white gap-2 p-4 rounded-xl">
             <strong className="text-black">Ubicación de la agencia</strong>
             <form class="max-w-sm mx-auto">
@@ -140,14 +167,14 @@ function Add() {
       ))}
     </Select>
     </div>
-    <p className="text-black">Municipio</p>
+    <p className="text-black mt-4">Municipio</p>
     <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
       <Select
       isRequired
       placeholder={selectedMun ? '' : 'Selecciona un Municipio'}
       value={selectedMun}
       onChange={handleChangeMun}
-      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-4"
       size={"sm"}
 
       style={{ width:350 }}
@@ -159,8 +186,8 @@ function Add() {
         </SelectItem>
       ))}
     </Select>
-    </div>
-              <label htmlFor="Ubicacion"  className="text-black">Ubicación</label>
+          </div>
+              <label htmlFor="Ubicacion"  className="text-black mt-4">Ubicación</label>
               <input
                 type="text"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="Ubicacion"
@@ -204,6 +231,14 @@ function Add() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="Ext" placeholder="Ej. 000000"
                 required value={ext} onChange={(e)=>setExt(e.target.value)}/>
               </div>
+
+              <label htmlFor="Ubicacion"  className="text-black mt-4">Extensión Completa</label>
+              <input
+                type="number"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="Ubicacion"
+                placeholder="0412-000-0000"
+              value={extComp} onChange={(e)=>setExtComp(e.target.value)} required/>
+              
               <button className="bg-gradient-to-tr from-red-600 to-red-400 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer mt-3">{isLoading ? 'Cargando...' : 'Guardar'}</button>
                 </div>
             </div>

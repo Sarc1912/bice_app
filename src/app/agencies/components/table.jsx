@@ -3,20 +3,34 @@
 import {Edit, Disable} from '@/app/components/Buttons'
 import React, { useEffect, useState } from 'react'
 
-function DinamicTable() {
+async function loadAgencies() {
+	const userData = JSON.parse(localStorage.getItem("userData"))
+	
+	const token = localStorage.getItem("token")
+	
+	  const res = await fetch("http://localhost:3001/agencies",{
+		method:'POST',
+		headers: {
+		  'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+		  tipo_u: userData.tipoUsuario,
+		  cargo: userData.cargo,
+		  token: token,
+		}),
+	  })
+	
+	  const data = await res.json();
+
+
+	
+	  return data.agencias
+	}
+
+async function DinamicTable() {
 	const [agencys, setAgencys] = useState(null);
 
-
-	useEffect(() => {
-		const fetchAgency = async () => {
-		  const res = await fetch('/api/agency/searchAgency');
-		  const data = await res.json();
-		  console.log(data)
-		  setAgencys(data);
-		};
-	
-		fetchAgency();
-	  }, []);
+	const agencies = await loadAgencies();
 
 	const active = (
 		<span
@@ -85,7 +99,7 @@ function DinamicTable() {
       direccion: 'adadas',
       extensionn: 123
     }, */}
-		{agencys && agencys.map((agency) => (
+		{agencies && agencies.map((agency) => (
 		<tr key={agency.id_agencia}>
 			<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
 				<div class="flex items-center">

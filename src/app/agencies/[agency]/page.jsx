@@ -189,9 +189,9 @@ function Agency({params}) {
             </form>
           </div>
         </div>
-        <div className="bg-white gap-1 p-4 rounded-xl mt-5">
+        {/* <div className="bg-white gap-1 p-4 rounded-xl mt-5">
           <AddDevices agency={id_agencia} />
-        </div>
+        </div> */}
       </div>
     </div>
   );
