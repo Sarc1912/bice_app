@@ -10,6 +10,7 @@ const auth = require("./api/auth/authController")
 const device = require("./api/devices/device")
 const user = require("./api/users/user")
 const agency = require("./api/agency/agencyController")
+const IP = require("./api/IP/IPcontroller")
 
 //EndImports
 app.use(cors())
@@ -39,14 +40,19 @@ app.post("/areas/", user.Area );
 app.post("/updUsers/", user.UpdUser );
 
 app.post('/agencies', agency.Agencies);
+app.post('/resumeAgency', agency.resumeAgency);
 app.post('/addAgencies', agency.addAgency )
+app.post('/searchAgency/', agency.searchAgency);
+app.post('/updAgency', agency.updAgency);
 
 app.post("/states/", agency.States);
-app.post("/municipalities/", agency.municipalities)
+app.post("/municipalities/", agency.municipalities);
 
 
-app.post("/addDevices/", device.addDevices)
-app.post("/typeLink/", device.typeLink)
-app.post("/manufacturer/", device.getManufacturer)
+app.post("/addDevices/", device.addDevices);
+app.post("/typeLink/", device.typeLink);
+app.post("/manufacturer/", device.getManufacturer);
+
+app.post("/saveIP/", IP.saveIP);
 
 //EndRoutes

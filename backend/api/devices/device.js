@@ -17,7 +17,7 @@ const getDevices = (request, response) => {
 const addDevices = (request, response) => {
     const { tipo_u_admin, cargo_admin, token, disp, model, manufac, typelink, vel, estatus} = request.body
 
-    pool.query("INSERT INTO public.tbl_datos_dispositivos(nombre_dispositivo, fabricante, tipo_enlace, velocidad, tipo_dispositivo, estatus)VALUES ($1, $2, $3, $4, $5, $6);", [disp, manufac, typelink, vel, "Router", estatus ],  (error, results) =>{
+    pool.query("INSERT INTO public.tbl_datos_dispositivos(nombre_dispositivo, fabricante, tipo_enlace, velocidad, tipo_dispositivo, estatus, id_agencia)VALUES ($1, $2, $3, $4, $5, $6, $7);", [disp, manufac, typelink, vel, "Router", estatus ],  (error, results) =>{
         if(error){
             response.status(400).json(error)
         }

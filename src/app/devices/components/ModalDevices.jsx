@@ -14,6 +14,8 @@ import {Select, SelectItem} from "@nextui-org/react";
 import Swal from "sweetalert2";
 
 
+
+
 function ModalDevice({ isOpen, onOpenChange }) {
   
     const [cargo, setCargo] = useState([]);
@@ -23,12 +25,13 @@ function ModalDevice({ isOpen, onOpenChange }) {
     const [selectedArea, setSelectedArea] = useState('');
     const [name, setName] = useState();
     const [mail, setMail] = useState();
-    const [area, setArea] = useState();
     const [valor, setValor] = useState(0);
-    const [id, setId] = useState();
     const [isLoading, setIsLoading] = useState(false)
+    const [agencies, setAgencies] = useState()
+    const [SelectedAgencia, setSelectedAgencia] = useState();
 
-    const cambiarValor = () => {
+    const cambiarValor = (e) => {
+      e.preventDefault()
       setValor(valor === 1 ? 2 : 1);
     };
 
@@ -59,11 +62,12 @@ function ModalDevice({ isOpen, onOpenChange }) {
             }),
           });
           const data = await response.json();
-          console.log(data)
           setCargo(data);        };
     
         fetchData();
-      }, []);
+      }, [isOpen, onOpenChange]);
+
+      
       
       useEffect(() => {
         const userData = JSON.parse(localStorage.getItem("userData"))
@@ -82,14 +86,35 @@ function ModalDevice({ isOpen, onOpenChange }) {
             }),
           });
           const data = await response.json();
-          console.log(data)
           setTypeU(data);
         };
     
         fetchData();
-      }, []);
+      }, [isOpen, onOpenChange]);
 
+            
+      useEffect(() => {
+        const userData = JSON.parse(localStorage.getItem("userData"))
+        const token = localStorage.getItem("token")
 
+        const fetchData = async () => {
+          const response = await fetch('http://localhost:3001/resumeAgency/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                tipo_u: userData.tipoUsuario,
+                cargo: userData.cargo,
+                token: token,
+            }),
+          });
+          const resp = await response.json();
+          setAgencies(resp.data);
+        };
+    
+        fetchData();
+      }, [cargo, typeU, isOpen, onOpenChange]);
 
       const handleSubmit = async (e) => {
         e.preventDefault();
@@ -261,7 +286,7 @@ function ModalDevice({ isOpen, onOpenChange }) {
                         for="fName"
                         className="mb-3 block text-black font-medium text-[#07074D]"
                       >
-                        Áreas
+                        Velocidad
                       </label>
                       <Select
                         items={velocidades}
@@ -276,7 +301,25 @@ function ModalDevice({ isOpen, onOpenChange }) {
                     </div>
                   </div>
                   <div className="w-full px-3 sm:w-1/2">
-                    <div className="mb-5">
+                  <div className="mb-5">
+                      <label
+                        for="fName"
+                        className="mb-3 block text-black font-medium text-[#07074D]"
+                      >
+                        Agencias
+                      </label>
+                      <Select
+                        items={agencies && agencies}
+                        placeholder={selectedArea ? selectedArea : "Seleccione una velocidad media."}
+                        className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-black font-medium text-[#6B7280] outline-none focus:border-red-700 focus:shadow-md"
+                        onChange={(e) => setSelectedAgencia(e.target.value)}
+                        >
+                        {(agencie) => <SelectItem className="text-black bg-white" key={agencie.id_agencia}>{agencie.nombre_agencia}
+                            </SelectItem>}
+                        </Select>
+
+                    </div>
+                    <div>
                       <label
                         for="lName"
                         className="mb-3 block text-black font-medium text-[#07074D]"
@@ -284,7 +327,7 @@ function ModalDevice({ isOpen, onOpenChange }) {
                         Estatus
                       </label>
                       <button type="submit"
-                        onClick={cambiarValor}
+                        onClick={(e)=>{cambiarValor(e)}}
                         className={`px-5 py-3 rounded-md text-black  ${valor === 1 ? 'bg-green-500 hover:bg-green-400' : 'bg-red-500 hover:bg-red-400'}`}
                       >
                         {valor === 1 ? 'Activo' : 'Inactivo'}
@@ -295,14 +338,14 @@ function ModalDevice({ isOpen, onOpenChange }) {
 
                 <div>
                   <button className="hover:shadow-form rounded-md bg-red-700 py-3 px-8 text-center text-black font-semibold text-white outline-none">
-                    Submit
+                    Guardar
                   </button>
                 </div>
               </form>
             </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="light" onPress={onClose}>
-                Close
+                Cerrar
               </Button>
             </ModalFooter>
           </>

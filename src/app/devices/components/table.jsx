@@ -29,20 +29,19 @@ async function loadDisp() {
 
 async function DinamicTable() {
 	const [isOpen, setIsOpen] = useState(false);
+	const [disp, setDisp] = useState()
 
-	const onOpen = () => {
+	const onOpen = (dispo) => {
 		setIsOpen(true);
+		setDisp(dispo.id_dispositivo)
 	  };
 	
 	  const onOpenChange = (isOpen) => {
 		setIsOpen(isOpen);
 	  };
 
-	const data = await loadDisp()
 
-	const handleModal = (id) =>{
-		console.log(id)
-	}
+	const data = await loadDisp()
 
 	const active = (
 		<span
@@ -103,7 +102,7 @@ async function DinamicTable() {
 			<td className="px-3 py-5 border-b border-gray-200 bg-white text-sm text-black" >{disp.tipo_dispositivo}</td>
 			<td className="px-3 py-5 border-b border-gray-200 bg-white text-sm text-black" >{disp.estaus_dispositivo === "Activo" ? active : inactive}</td>
 			<td>
-				<button className='bg-gradient-to-tr from-red-600 to-red-400 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer' onClick={()=>onOpen()}>
+				<button className='bg-gradient-to-tr from-red-600 to-red-400 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer' onClick={()=>onOpen(disp)}>
 					Agregar IP
 				</button>
 			</td>
@@ -111,7 +110,7 @@ async function DinamicTable() {
 		))}
 	</tbody>
 
-	<ModalIp isOpen={isOpen} onOpenChange={onOpenChange} />
+	<ModalIp isOpen={isOpen} onOpenChange={onOpenChange} dispo={disp} />
     </>
   )
 }
