@@ -18,9 +18,18 @@ const saveIP = (request, response) =>{
         } )
 }
 
-const searchIP = 
+const searchIP = (request, response) =>{
+    pool.query("SELECT * FROM tbl_direcciones_ip", (error, result)=>{
+            try {
+                response.status(200).json({msg:result.rows})
+            } catch (error) {
+                response.status(500).json({error:"Ha ocurrido un error, por favor intente más tarde"})
+            }
+        } )
+}
 
 
 module.exports = {
-    saveIP
+    saveIP,
+    searchIP
 }

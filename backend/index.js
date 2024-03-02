@@ -53,6 +53,7 @@ app.post("/addDevices/", device.addDevices);
 app.post("/typeLink/", device.typeLink);
 app.post("/manufacturer/", device.getManufacturer);
 
+app.post("/searchIP/", IP.searchIP)
 app.post("/saveIP/", IP.saveIP);
 
 //EndRoutes
