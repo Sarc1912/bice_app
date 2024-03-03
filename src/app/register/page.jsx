@@ -47,14 +47,17 @@ function Register() {
                 icon: 'error',
                 confirmButtonText: 'Cerrar'
               })
+              setIsLoading(false); // Habilita el botón
+
         } else if(errors.length > 0){
             Swal.fire({
                 title: "Su contraseña no cumple con los requisitos.",
                 icon: 'error',
                 confirmButtonText: 'Cerrar'
               })
+              setIsLoading(false); // Habilita el botón
+
         }
-        
         else{
             e.preventDefault();
             setIsLoading(true); // Deshabilita el botón
