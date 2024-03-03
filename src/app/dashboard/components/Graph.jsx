@@ -1,21 +1,30 @@
+"use client"
+
 import { NextResponse } from 'next/server'
+import { useEffect, useState } from 'react';
 
-async function loadDisp() {	
-	  const res = await fetch("http://localhost:3001/searchIP",{
-		method:'POST',
-		headers: {
-		  'Content-Type': 'application/json',
-		},
-	  })
-	
-	  const data = await res.json();
-	
-	  return data.msg
-	}
+const Graph = () => {
+	const [data, setData] = useState([])
 
-async function Graph() {
+	useEffect(()=>{
+		const intervalId = setInterval(async ()=>{
+			try {
+				const res = await fetch("http://localhost:3001/searchIP",{
+				method:'POST',
+				headers: {
+				'Content-Type': 'application/json',
+				},
+			})
+				const data = await res.json();
+				setData(data.msg)
+			} catch (error) {
+				console.log(error)
+			}
+		}, 5000)
+		return () => clearInterval(intervalId);
 
-const data = await loadDisp();
+	}, [])
+
 
 	const active = (
 		<span
@@ -34,8 +43,6 @@ const data = await loadDisp();
 	<span class="relative">Inactive</span>
 	</span>
 	)
-
-
   return (
     <>
 	<thead>
@@ -52,6 +59,7 @@ const data = await loadDisp();
 	</thead>
 	<tbody>
 		{data && data.map(disp =>(
+			
 		<tr>
 			<td className="px-3 py-5 border-b border-gray-200 bg-white text-sm text-black" >{disp.datos_ip}</td>
 			<td className="px-3 py-5 border-b border-gray-200 bg-white text-sm text-black" >{disp.estatus === 1 ? active : inactive}</td>
