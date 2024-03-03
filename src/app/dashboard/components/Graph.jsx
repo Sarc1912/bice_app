@@ -2,6 +2,7 @@
 
 import { NextResponse } from 'next/server'
 import { useEffect, useState } from 'react';
+import LoadingPage from './loading';
 
 const Graph = () => {
 	const [data, setData] = useState([])
@@ -58,13 +59,16 @@ const Graph = () => {
 		</tr>
 	</thead>
 	<tbody>
-		{data && data.map(disp =>(
+		{data && data.length > 0 ? data.map(disp =>(
 			
 		<tr>
 			<td className="px-3 py-5 border-b border-gray-200 bg-white text-sm text-black" >{disp.datos_ip}</td>
 			<td className="px-3 py-5 border-b border-gray-200 bg-white text-sm text-black" >{disp.estatus === 1 ? active : inactive}</td>
 		</tr>
-		))}
+		))
+		: <LoadingPage />
+		
+		}
 	</tbody>
     </>
   )

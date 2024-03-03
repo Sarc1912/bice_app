@@ -67,6 +67,18 @@ return response.status(401).json({ error: 'Su usuario no tiene suficientes privi
 }
 }
 
+const changeStatusAgency = (request, response) => {
+    const {id_agencia, status} = req.body
+
+    let update;
+
+    (status === 1) ? update = 2 : update = 1
+
+    pool.query = (`UPDATE public.tbl_datos_agencias
+	SET id_agencia=$2 WHERE id_agencia=$1`, [id_agencia, update])
+
+}
+
 const searchAgency = (request, response) => {
     const { id_agencia } = request.body;
 
