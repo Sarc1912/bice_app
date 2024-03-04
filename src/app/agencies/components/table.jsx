@@ -1,7 +1,8 @@
 "use client"
 
-import {Edit, Disable} from '@/app/components/Buttons'
-import React, { useEffect, useState } from 'react'
+import {Edit, Disable, DataContact} from '@/app/components/Buttons'
+import React, { useState } from 'react'
+import ModalContactAgency from './ModalContactAgency'
 
 async function loadAgencies() {
 	const userData = JSON.parse(localStorage.getItem("userData"))
@@ -28,7 +29,18 @@ async function loadAgencies() {
 	}
 
 async function DinamicTable() {
-	const [agencys, setAgencys] = useState(null);
+	const [isOpen, setIsOpen] = useState(false);
+	const [selectA, setSelectA] = useState("")
+
+	const onOpen = (a) => {
+		setSelectA(a)
+		setIsOpen(true);
+	  };
+	
+	  const onOpenChange = (isOpen) => {
+		setIsOpen(isOpen);
+	  };
+
 
 	const agencies = await loadAgencies();
 
@@ -151,13 +163,18 @@ async function DinamicTable() {
 					<Edit link={`agencies/${agency.id_agencia}`} />
 				</p>
 				<p className='text-black'>
-					<Disable id={agency.id_agencia} />
+					<Disable id={agency} />
+				</p>
+				<p class="text-gray-900 whitespace-no-wrap">
+					<DataContact onOpen={() => onOpen(agency)} />
 				</p>
 			</td>
 		</tr>
 			))}
 
 	</tbody>
+
+	<ModalContactAgency isOpen={isOpen} onOpenChange={onOpenChange} agency={selectA} />
     </>
   )
 }

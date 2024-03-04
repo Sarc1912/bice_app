@@ -11,6 +11,7 @@ const device = require("./api/devices/device")
 const user = require("./api/users/user")
 const agency = require("./api/agency/agencyController")
 const IP = require("./api/IP/IPcontroller")
+const contact = require("./api/contacAgency/contactAgencyController")
 
 //EndImports
 app.use(cors())
@@ -56,5 +57,12 @@ app.post("/manufacturer/", device.getManufacturer);
 
 app.post("/searchIP/", IP.searchIP)
 app.post("/saveIP/", IP.saveIP);
+
+app.post("/contacts", contact.viewContact)
+app.post("/saveContact/", contact.saveContact)
+app.post("/updContact/", contact.editContact)
+app.post("/delContact/", contact.delContact)
+
+
 
 //EndRoutes

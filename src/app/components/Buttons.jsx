@@ -1,5 +1,5 @@
 "use client"
-import { faCarOn, faPowerOff } from '@fortawesome/free-solid-svg-icons'
+import { faCarOn, faContactCard, faDirections, faPowerOff } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Link from 'next/link'
 import React, { useState } from 'react'
@@ -17,14 +17,23 @@ export function Edit(props) {
   )
 }
 
-export function Disable(id) {
-    const [active, setActive] = useState(true)
-    console.log(active)
+export function Disable({id}) {
 
+    const [active, setActive] = useState(true)
   return (
     <button className="flex p-2.5 bg-red-500 rounded-xl hover:rounded-3xl hover:bg-red-600 transition-all duration-300 text-white h-11 w-11"  onClick={()=>setActive(!active)}>
         <FontAwesomeIcon icon={faPowerOff} size='xl' />
     </button>
   )
+}
+
+export function DataContact({onOpen}){
+
+  return(
+    <button className="flex p-2.5 bg-red-500 rounded-xl hover:rounded-3xl hover:bg-red-600 transition-all duration-300 text-white h-11 w-11"  onClick={()=>onOpen()}>
+    <FontAwesomeIcon icon={faContactCard} size='xl' />
+</button>
+  )
+  
 }
 
