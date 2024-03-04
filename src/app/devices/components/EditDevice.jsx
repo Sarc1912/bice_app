@@ -16,7 +16,7 @@ import Swal from "sweetalert2";
 
 
 
-function ModalDevice({ isOpen, onOpenChange }) {
+function ModalDevice({ isOpen, onOpenChange, dispo }) {  
     const [cargo, setCargo] = useState([]);
     const [typeU, setTypeU] = useState([]);
     const [selectedCargo, setSelectedCargo] = useState('');
@@ -28,6 +28,12 @@ function ModalDevice({ isOpen, onOpenChange }) {
     const [isLoading, setIsLoading] = useState(false)
     const [agencies, setAgencies] = useState()
     const [SelectedAgencia, setSelectedAgencia] = useState();
+
+    useEffect(() => {
+      setName(dispo ? dispo.nombre_dispositivo : "");
+      setMail(dispo ? dispo.fabricante : "");
+      setValor(dispo && dispo.estaus_dispositivo === "Activo" ? 1 : 2);
+    }, [dispo]);
 
     const cambiarValor = (e) => {
       e.preventDefault()
@@ -136,9 +142,7 @@ function ModalDevice({ isOpen, onOpenChange }) {
             manufac: selectedTypeU,
             typelink: selectedCargo,
             vel: velocidades[parseInt(selectedArea)+1].label,
-            estatus:valor,
-            id_agencia:SelectedAgencia
-
+            estatus:valor
           }),
         })
         .then((response) => response.json())
@@ -186,7 +190,7 @@ function ModalDevice({ isOpen, onOpenChange }) {
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1 bg-red-900 rounded-lg">
-              Registrar Dispositivo
+              Editar Dispositivo
             </ModalHeader>
             <ModalBody>
               <form

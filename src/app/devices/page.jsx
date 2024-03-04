@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import DinamicTable from './components/table'
+import DinamicTable from './components/DinamicTable'
 import ModalDevice from './components/ModalDevices'
 
 function Devices() {

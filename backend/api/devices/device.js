@@ -15,14 +15,17 @@ const getDevices = (request, response) => {
 
 
 const addDevices = (request, response) => {
-    const { tipo_u_admin, cargo_admin, token, disp, model, manufac, typelink, vel, estatus} = request.body
+    const { tipo_u_admin, cargo_admin, token, disp, model, manufac, typelink, vel, estatus, id_agencia} = request.body
 
-    pool.query("INSERT INTO public.tbl_datos_dispositivos(nombre_dispositivo, fabricante, tipo_enlace, velocidad, tipo_dispositivo, estatus, id_agencia)VALUES ($1, $2, $3, $4, $5, $6, $7);", [disp, manufac, typelink, vel, "Router", estatus ],  (error, results) =>{
+    pool.query("INSERT INTO public.tbl_datos_dispositivos(nombre_dispositivo, fabricante, tipo_enlace, velocidad, tipo_dispositivo, estatus, id_agencia)VALUES ($1, $2, $3, $4, $5, $6, $7);", [disp, manufac, typelink, vel, "Router", estatus, id_agencia ],  (error, results) =>{
         if(error){
+            console.log(error)
             response.status(400).json(error)
+        }else{
+            console.log(results.rows)
+            response.status(200).json({msg:"Su dispositivo se ha ergistrado satisfactoriamente."})
         }
-        console.log(results)
-        response.status(200).json(results.rows)
+
     })
 }
 
@@ -30,8 +33,9 @@ const getManufacturer = (request, response) => {
     pool.query("SELECT * FROM public.tbl_fabricante", (error, results) =>{
         if(error){
             response.status(400).json(error)
+        }else{
+            response.status(200).json(results.rows)
         }
-        response.status(200).json(results.rows)
     })
 }
 
@@ -39,8 +43,9 @@ const typeLink = (request, response) => {
     pool.query("SELECT * FROM public.tbl_tipo_enlace", (error, results) =>{
         if(error){
             response.status(400).json(error)
+        }else{
+            response.status(200).json(results.rows)
         }
-        response.status(200).json(results.rows)
     })
 }
 
