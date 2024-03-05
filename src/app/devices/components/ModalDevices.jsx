@@ -170,6 +170,9 @@ function ModalDevice({ isOpen, onOpenChange }) {
         })
         .finally(() => {
           setIsLoading(false); // Habilita el botón
+          setTimeout(()=>{
+            window.location.href = "/devices/"
+          },2000)
         });
       };
 

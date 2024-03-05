@@ -12,6 +12,7 @@ const user = require("./api/users/user")
 const agency = require("./api/agency/agencyController")
 const IP = require("./api/IP/IPcontroller")
 const contact = require("./api/contacAgency/contactAgencyController")
+const incidences = require("./api/incidence/incidenceController")
 
 //EndImports
 app.use(cors())
@@ -59,11 +60,20 @@ app.post("/editDevice/", device.editDevices)
 
 app.post("/searchIP/", IP.searchIP)
 app.post("/saveIP/", IP.saveIP);
+app.post("/SearchIPAgency/", IP.SearchIPAgency)
+app.post("/EditAgencias/", IP.EditIp)
 
 app.post("/contacts", contact.viewContact)
 app.post("/saveContact/", contact.saveContact)
 app.post("/updContact/", contact.editContact)
 app.post("/delContact/", contact.delContact)
+
+app.post("/searchAllIncidences/", incidences.searchAllIncidences)
+app.post("/changeStatusIncidence/", incidences.changeStatusIncidence)
+app.post("/countActiveIncidences/", incidences.countActiveIncidences)
+
+
+
 
 
 

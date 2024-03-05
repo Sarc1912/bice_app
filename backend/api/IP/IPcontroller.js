@@ -28,8 +28,18 @@ const searchIP = (request, response) =>{
         } )
 }
 
+const EditIp = (request, response) =>{
+    pool.query("")
+}
+
+const SearchIPAgency = (request, response) =>{
+
+}
+
 
 module.exports = {
     saveIP,
-    searchIP
+    searchIP,
+    EditIp,
+    SearchIPAgency
 }
