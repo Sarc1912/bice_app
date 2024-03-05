@@ -135,7 +135,7 @@ function ModalDevice({ isOpen, onOpenChange }) {
             model: mail,
             manufac: selectedTypeU,
             typelink: selectedCargo,
-            vel: velocidades[parseInt(selectedArea)+1].label,
+            vel: selectedArea && velocidades[parseInt(selectedArea)-1].label,
             estatus:valor,
             id_agencia:SelectedAgencia
 

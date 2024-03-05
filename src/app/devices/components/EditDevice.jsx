@@ -16,7 +16,8 @@ import Swal from "sweetalert2";
 
 
 
-function ModalDevice({ isOpen, onOpenChange, dispo }) {  
+function ModalDevice({ isOpen, onOpenChange, dispo }) {
+    const [data, setData] = useState()
     const [cargo, setCargo] = useState([]);
     const [typeU, setTypeU] = useState([]);
     const [selectedCargo, setSelectedCargo] = useState('');
@@ -28,17 +29,6 @@ function ModalDevice({ isOpen, onOpenChange, dispo }) {
     const [isLoading, setIsLoading] = useState(false)
     const [agencies, setAgencies] = useState()
     const [SelectedAgencia, setSelectedAgencia] = useState();
-
-    useEffect(() => {
-      setName(dispo ? dispo.nombre_dispositivo : "");
-      setMail(dispo ? dispo.fabricante : "");
-      setValor(dispo && dispo.estaus_dispositivo === "Activo" ? 1 : 2);
-    }, [dispo]);
-
-    const cambiarValor = (e) => {
-      e.preventDefault()
-      setValor(valor === 1 ? 2 : 1);
-    };
 
     const velocidades = [
       {value: 1, label: "3 Mbps"},
@@ -67,7 +57,8 @@ function ModalDevice({ isOpen, onOpenChange, dispo }) {
             }),
           });
           const data = await response.json();
-          setCargo(data);        };
+          setCargo(data);        
+        };
     
         fetchData();
       }, [isOpen, onOpenChange]);
@@ -96,6 +87,45 @@ function ModalDevice({ isOpen, onOpenChange, dispo }) {
     
         fetchData();
       }, [isOpen, onOpenChange]);
+
+      useEffect(()=>{
+        const id_dispositivo = dispo && dispo.id_dispositivo
+
+        console.log(id_dispositivo)
+
+        const fetchData = async () => {
+          const response = await fetch('http://localhost:3001/getCompDevice/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              id_dispositivo: id_dispositivo
+            }),
+          });
+          const data = await response.json();
+          setData(data && data);
+        };
+        
+        if(id_dispositivo !== null && id_dispositivo !== undefined){
+          fetchData();
+        }
+      }, [isOpen, onOpenChange, dispo])
+
+      useEffect(() => {
+        setName(data && data.nombre_dispositivo)
+        setMail(data && data.tipo_dispositivo)
+        setSelectedTypeU(data && data.fabricante)
+        setSelectedCargo(data && data.tipo_enlace )
+        setSelectedArea(data && data.velocidad)
+        setSelectedAgencia(data && data.id_agencia)
+        setValor(data && data.estatus)
+      }, [data]);
+  
+      const cambiarValor = (e) => {
+        e.preventDefault()
+        setValor(valor === 1 ? 2 : 1);
+      };
 
             
       useEffect(() => {
@@ -128,7 +158,7 @@ function ModalDevice({ isOpen, onOpenChange, dispo }) {
         const userData = JSON.parse(localStorage.getItem("userData"))
         const token = localStorage.getItem("token")
       
-        fetch('http://localhost:3001/addDevices', {
+        fetch('http://localhost:3001/editDevice', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -141,7 +171,7 @@ function ModalDevice({ isOpen, onOpenChange, dispo }) {
             model: mail,
             manufac: selectedTypeU,
             typelink: selectedCargo,
-            vel: velocidades[parseInt(selectedArea)+1].label,
+            vel: velocidades,
             estatus:valor
           }),
         })
@@ -156,7 +186,7 @@ function ModalDevice({ isOpen, onOpenChange, dispo }) {
             })
           }else{
             Swal.fire({
-              title: 'Su dispositivo ha sido registrado satisfactoriamente.',
+              title: data.msg,
               text: 'Será redireccionado en breve',
               icon: 'success',
               confirmButtonText: 'Cerrar'
@@ -174,8 +204,16 @@ function ModalDevice({ isOpen, onOpenChange, dispo }) {
         })
         .finally(() => {
           setIsLoading(false); // Habilita el botón
+          setTimeout(()=>{
+            window.location.href = "/devices/"
+          },2000)
         });
       };
+
+      let fabricante = typeU &&typeU.find(item => item.id_fabricante === selectedTypeU)
+      let tipo_enlace = cargo && cargo.find(item => item.cod_tipo_enlace === selectedCargo);
+      let agencias = agencies && agencies.find(item => item.id_agencia === SelectedAgencia)
+
 
   return (
     <Modal
@@ -253,9 +291,13 @@ function ModalDevice({ isOpen, onOpenChange, dispo }) {
                       </label>
                       <Select
                         items={typeU}
-                        placeholder={selectedTypeU ? selectedTypeU : "Seleccione un fabricante."}
+                        placeholder={selectedTypeU ? fabricante.fabricante : "Seleccione un fabricante."}
                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-black font-medium text-[#6B7280] outline-none focus:border-red-700 focus:shadow-md"
-                        onChange={(e) => setSelectedTypeU(e.target.value)}
+                        onChange={(e) => {
+                          let selectedId = e.target.value;
+                          let selectedObject = typeU.find(item => item.id_fabricante === selectedId);
+                          setSelectedTypeU(selectedObject);
+                        }}
                         >
                         {(typeU) => <SelectItem className="text-black bg-white" key={typeU.id_fabricante}>
                           {typeU.fabricante}
@@ -274,9 +316,13 @@ function ModalDevice({ isOpen, onOpenChange, dispo }) {
                       </label>
                       <Select
                         items={cargo}
-                        placeholder={selectedCargo ? selectedTypeU : "Seleccione un tipo de enlace."}
+                        placeholder={selectedCargo ? tipo_enlace.tipo_enlace : "Seleccione un tipo de enlace."}
                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-black font-medium text-[#6B7280] outline-none focus:border-red-700 focus:shadow-md"
-                        onChange={(e) => setSelectedCargo(e.target.value)}
+                        onChange={(e) => {
+                          let selectedId = e.target.value;
+                          let selectedObject = cargo.find(item => item.cod_tipo_enlace === selectedId);
+                          setSelectedCargo(selectedObject);
+                        }}
                         >
                         {(cargo) => <SelectItem className="text-black bg-white px-3" key={cargo.cod_tipo_enlace}>{cargo.tipo_enlace}</SelectItem>}
                         </Select>
@@ -315,9 +361,13 @@ function ModalDevice({ isOpen, onOpenChange, dispo }) {
                       </label>
                       <Select
                         items={agencies && agencies}
-                        placeholder={SelectedAgencia ? SelectedAgencia : "Seleccione una velocidad media."}
+                        placeholder={SelectedAgencia ? agencias.nombre_agencia : "Seleccione una velocidad media."}
                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-black font-medium text-[#6B7280] outline-none focus:border-red-700 focus:shadow-md"
-                        onChange={(e) => setSelectedAgencia(e.target.value)}
+                        onChange={(e) => {
+                          let selectedId = e.target.value;
+                          let selectedObject = agencies.find(item => item.id_agencia === selectedId);
+                          setSelectedAgencia(selectedObject);
+                        }}
                         >
                         {(agencie) => <SelectItem className="text-black bg-white" key={agencie.id_agencia}>{agencie.nombre_agencia}
                             </SelectItem>}
