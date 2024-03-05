@@ -1,27 +1,32 @@
-import React from 'react'
+"use client"
+
+import React, { useEffect, useState } from 'react'
 import ChangeIncidence from './components/ChangeIncidence';
 
-async function searchAllIncidences(){
 
-  try {
-    const res = await fetch("http://localhost:3001/searchAllIncidences/",{
-    method:'POST',
-    headers: {
-    'Content-Type': 'application/json',
-    },
-  })
-    const data = await res.json();
-    return data.data;
-  } catch (error) {
-    console.log(error)
-  }
-}
+function app() {
 
-async function app() {
+  const [data, setData] = useState(null);
 
-  const data = await searchAllIncidences()
+  useEffect(() => {
+    const searchAllIncidences = async () => {
+      try {
+        const res = await fetch("http://localhost:3001/searchAllIncidences/",{
+          method:'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        const data = await res.json();
+        setData(data.data);
+      } catch (error) {
+        console.log(error)
+      }
+    };
 
-  console.log(data)
+    searchAllIncidences();
+  }, []); // Dependencias vacías significa que se ejecutará una vez después del primer renderizado
+
 
   return (
 
@@ -42,8 +47,8 @@ async function app() {
             {incidence.descr_incidencia}
           </td>
           <td className='px-3 py-5 border-b border-gray-200 bg-white text-sm'>{incidence.fecha}</td>
-          <td className='px-3 py-5 border-b border-gray-200 bg-white text-sm'>{incidence.ip}</td>
-          <td className='px-3 py-5 border-b border-gray-200 bg-white text-sm'>{incidence.estatus === 1 ? "Abierta" : "Cerrada"}</td>
+          <td className='px-3 py-5 border-b border-gray-200 bg-white text-sm'>{incidence.datos_ip}</td>
+          <td className='px-3 py-5 border-b border-gray-200 bg-white text-sm'>{incidence.descr_incidencia_e}</td>
           <td className='px-3 py-5 border-b border-gray-200 bg-white text-sm'>
             <ChangeIncidence props = {incidence.id_incidencia} />
           </td>
