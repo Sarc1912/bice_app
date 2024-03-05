@@ -27,10 +27,9 @@ function app() {
     searchAllIncidences();
   }, []); // Dependencias vacías significa que se ejecutará una vez después del primer renderizado
 
+  console.log(data)
 
   return (
-
-
     <div>
       <table className='text-black'>
         <thead>
@@ -44,13 +43,13 @@ function app() {
         {data ? data.map((incidence)=>(
         <tr key={incidence.id_incidencia}>
           <td className='px-3 py-5 border-b border-gray-200 bg-white text-sm'>
-            {incidence.descr_incidencia}
+            {incidence.descr_incidencia_i}
           </td>
           <td className='px-3 py-5 border-b border-gray-200 bg-white text-sm'>{incidence.fecha}</td>
           <td className='px-3 py-5 border-b border-gray-200 bg-white text-sm'>{incidence.datos_ip}</td>
           <td className='px-3 py-5 border-b border-gray-200 bg-white text-sm'>{incidence.descr_incidencia_e}</td>
           <td className='px-3 py-5 border-b border-gray-200 bg-white text-sm'>
-            <ChangeIncidence props = {incidence.id_incidencia} />
+            <ChangeIncidence props = {incidence.id_incidencia} estatusI={incidence.cod_estatus_incidencia} />
           </td>
         </tr>
       )) : "Cargando..."}

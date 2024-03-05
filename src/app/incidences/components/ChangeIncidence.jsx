@@ -3,8 +3,10 @@
 import React, { useState } from 'react'
 import Swal from 'sweetalert2';
 
-function ChangeIncidence({props}) {
+function ChangeIncidence({props, estatusI}) {
     const [isLoading, setIsLoading] = useState(false)
+
+    console.log(estatusI)
 
     const handleSubmit = async (props, estatus) => {
         setIsLoading(true); // Deshabilita el botón
@@ -58,8 +60,8 @@ function ChangeIncidence({props}) {
 
   return (
 <div class="flex justify-between space-x-4">
-    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={()=>handleSubmit(props, 2)}>
-        Cerrar
+    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={()=>handleSubmit(props, estatusI === 2 || estatusI === "2" ? 1 : 2)}>
+        {estatusI === 2 || estatusI === "2" ? "Reabrir" : "Cerrar"}
     </button>
 
     <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded" onClick={()=>handleSubmit(props, 3)}>
