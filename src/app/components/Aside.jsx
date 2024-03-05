@@ -14,8 +14,10 @@ function Aside(user) {
 
     window.location.href="/login"
   }
-  
 
+  const userData = JSON.parse(localStorage.getItem("userData"))
+
+  console.log(userData)
 
   return (
     <aside className="bg-gradient-to-br from-gray-800 to-gray-900 -translate-x-80 fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0">
@@ -74,6 +76,8 @@ function Aside(user) {
           </Link>
         </li>
         <li>
+        { 
+          userData.cargo === "Gerente de Telecomunicaciones" ? 
           <Link href={{ pathname:"/user" }}>
             <button className={`middle none font-sans font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg  w-full flex items-center gap-4 px-4 capitalize ${pathname === '/user' ? activeClasses : 'text-white hover:bg-white/10 active:bg-white/30'}`}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-5 h-5 text-inherit">
@@ -81,9 +85,13 @@ function Aside(user) {
               </svg>
               <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-medium capitalize">Usuarios</p>
             </button>
-          </Link>
+          </Link> : null
+        }
+
+
         </li>
         <li>
+{     userData.cargo === "Gerente de Telecomunicaciones" || userData.cargo === "Especialista de Redes" ?
           <Link href={{ pathname:"/incidences" }}>
             <button className={`middle none font-sans font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg  w-full flex items-center gap-4 px-4 capitalize ${pathname === '/incidences' ? activeClasses : 'text-white hover:bg-white/10 active:bg-white/30'}`}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-5 h-5 text-inherit">
@@ -91,7 +99,7 @@ function Aside(user) {
               </svg>
               <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-medium capitalize">Incidencias</p>
             </button>
-          </Link>
+          </Link> :null}
         </li>
       </ul>
       <ul className="mb-4 flex flex-col gap-1">

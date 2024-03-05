@@ -45,7 +45,7 @@ const Graph = () => {
 	</span>
 	)
   return (
-    <>
+    <div style={{ maxHeight: '300px', overflowY: 'auto', width:"240px" }}>
 	<thead>
 		<tr>
 			<th
@@ -60,7 +60,6 @@ const Graph = () => {
 	</thead>
 	<tbody>
 		{data && data.length > 0 ? data.map(disp =>(
-			
 		<tr>
 			<td className="px-3 py-5 border-b border-gray-200 bg-white text-sm text-black" >{disp.datos_ip}</td>
 			<td className="px-3 py-5 border-b border-gray-200 bg-white text-sm text-black" >{disp.estatus === 1 ? active : inactive}</td>
@@ -70,7 +69,7 @@ const Graph = () => {
 		
 		}
 	</tbody>
-    </>
+    </div>
   )
 }
 

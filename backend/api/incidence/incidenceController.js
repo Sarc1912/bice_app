@@ -45,7 +45,16 @@ const changeStatusIncidence = (request, response) =>{
 }
 
 const countActiveIncidences = (request, response) => {
-
+    const estatus = 1;
+    pool.query(`SELECT * FROM public.tbl_incidencias WHERE estatus =$1
+    `, [estatus],(err, res)=>{
+        try {
+            const incidences = res.rows.length
+            response.status(200).json({data:incidences})
+        } catch (err) {
+            response.status(400).json({error:"No se ha podido completar su solicitud", errMes:err})
+        }
+    })
 }
 
 

@@ -162,9 +162,9 @@ async function DinamicTable() {
 				<p class="text-gray-900 whitespace-no-wrap">
 					<Edit link={`agencies/${agency.id_agencia}`} />
 				</p>
-				<p className='text-black'>
+				{/* <p className='text-black'>
 					<Disable id={agency} />
-				</p>
+				</p> */}
 				<p class="text-gray-900 whitespace-no-wrap">
 					<DataContact onOpen={() => onOpen(agency)} />
 				</p>

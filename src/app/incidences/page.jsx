@@ -27,7 +27,6 @@ function app() {
     searchAllIncidences();
   }, []); // Dependencias vacías significa que se ejecutará una vez después del primer renderizado
 
-  console.log(data)
 
   return (
     <div>

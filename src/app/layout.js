@@ -7,7 +7,6 @@ import Aside from "./components/Aside";
 import Link from "next/link";
 import Footer from "./components/Footer";
 import { useEffect, useState } from "react";
-import { toast } from 'react-toastify';
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -17,6 +16,7 @@ export default function RootLayout({ children }) {
 
 const [isAuthenticated, setIsAuthenticated] = useState(false);
 const [user, setUser] = useState("")
+const [notification, setNotification] = useState()
 
 useEffect(() => {
   const token = localStorage.getItem('token');
@@ -26,6 +26,25 @@ useEffect(() => {
     setUser(JSON.parse(userData))
   }
 }, []);
+
+useEffect(()=>{
+  const intervalId = setInterval(async ()=>{
+    try {
+      const res = await fetch("http://localhost:3001/countActiveIncidences",{
+      method:'POST',
+      headers: {
+      'Content-Type': 'application/json',
+      },
+    })
+      const data = await res.json();
+      setNotification(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }, 5000)
+  return () => clearInterval(intervalId);
+
+}, [])
 
 const nav = (
 <nav className="block w-full max-w-full bg-transparent text-white shadow-none rounded-xl transition-all px-0 py-1">
@@ -74,8 +93,15 @@ const nav = (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-5 w-5 text-blue-gray-500">
           <path fill-rule="evenodd" d="M5.25 9a6.75 6.75 0 0113.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 01-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 11-7.48 0 24.585 24.585 0 01-4.831-1.244.75.75 0 01-.298-1.205A8.217 8.217 0 005.25 9.75V9zm4.502 8.9a2.25 2.25 0 104.496 0 25.057 25.057 0 01-4.496 0z" clip-rule="evenodd"></path>
         </svg>
+        {notification && notification.data > 0 && (
+  <span className="absolute top-0 right-0 inline-block w-3 h-3 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+    {notification && notification.data}
+  </span>
+)}
+
       </span>
     </button>
+
   </div>
 </div>
 </nav>)
