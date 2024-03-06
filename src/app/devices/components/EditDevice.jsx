@@ -30,6 +30,10 @@ function ModalDevice({ isOpen, onOpenChange, dispo }) {
     const [agencies, setAgencies] = useState()
     const [SelectedAgencia, setSelectedAgencia] = useState();
 
+    const [fab, setFab] = useState([])
+    const [tipoE, setTipoE] = useState([])
+    const [ag, setAg] = useState([])
+
     const velocidades = [
       {value: 1, label: "3 Mbps"},
       {value: 2, label: "5 Mbps"},
@@ -90,8 +94,6 @@ function ModalDevice({ isOpen, onOpenChange, dispo }) {
 
       useEffect(()=>{
         const id_dispositivo = dispo && dispo.id_dispositivo
-
-        console.log(id_dispositivo)
 
         const fetchData = async () => {
           const response = await fetch('http://localhost:3001/getCompDevice/', {
@@ -155,29 +157,37 @@ function ModalDevice({ isOpen, onOpenChange, dispo }) {
         e.preventDefault();
         setIsLoading(true); // Deshabilita el botón
 
+        const id_dispositivo = dispo && dispo.id_dispositivo
+
+
         const userData = JSON.parse(localStorage.getItem("userData"))
         const token = localStorage.getItem("token")
-      
+        console.log(selectedArea.label)
+        console.log(selectedArea)
+
+
         fetch('http://localhost:3001/editDevice', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
+
           body: JSON.stringify({
             tipo_u_admin: userData.tipoUsuario,
             cargo_admin: userData.cargo,
             token: token,
+            id_disp: id_dispositivo,
             disp: name,
             model: mail,
-            manufac: selectedTypeU,
-            typelink: selectedCargo,
-            vel: velocidades,
+            manufac: fab,
+            typelink: tipoE,
+            vel: selectedArea.label,
+            id_agencia: ag,
             estatus:valor
           }),
         })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data)
           if(data.error){
             Swal.fire({
               title: data.error,
@@ -297,6 +307,7 @@ function ModalDevice({ isOpen, onOpenChange, dispo }) {
                           let selectedId = e.target.value;
                           let selectedObject = typeU.find(item => item.id_fabricante === selectedId);
                           setSelectedTypeU(selectedObject);
+                          setFab(e.target.value)
                         }}
                         >
                         {(typeU) => <SelectItem className="text-black bg-white" key={typeU.id_fabricante}>
@@ -322,6 +333,7 @@ function ModalDevice({ isOpen, onOpenChange, dispo }) {
                           let selectedId = e.target.value;
                           let selectedObject = cargo.find(item => item.cod_tipo_enlace === selectedId);
                           setSelectedCargo(selectedObject);
+                          setTipoE(e.target.value)
                         }}
                         >
                         {(cargo) => <SelectItem className="text-black bg-white px-3" key={cargo.cod_tipo_enlace}>{cargo.tipo_enlace}</SelectItem>}
@@ -343,7 +355,10 @@ function ModalDevice({ isOpen, onOpenChange, dispo }) {
                         items={velocidades}
                         placeholder={selectedArea ? selectedArea : "Seleccione una velocidad media."}
                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-black font-medium text-[#6B7280] outline-none focus:border-red-700 focus:shadow-md"
-                        onChange={(e) => setSelectedArea(e.target.value)}
+                        onChange={(e) => {
+                          let selectedId = e.target.value;
+                          let selectedObject = velocidades.find(item => item.value == selectedId);
+                          setSelectedArea(selectedObject)}}
                         >
                         {(area) => <SelectItem className="text-black bg-white" key={area.value}>{area.label}
                             </SelectItem>}
@@ -367,6 +382,7 @@ function ModalDevice({ isOpen, onOpenChange, dispo }) {
                           let selectedId = e.target.value;
                           let selectedObject = agencies.find(item => item.id_agencia === selectedId);
                           setSelectedAgencia(selectedObject);
+                          setAg(e.target.value)
                         }}
                         >
                         {(agencie) => <SelectItem className="text-black bg-white" key={agencie.id_agencia}>{agencie.nombre_agencia}

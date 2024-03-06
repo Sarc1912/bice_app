@@ -59,6 +59,7 @@ app.post("/getCompDevice/", device.getCompDevice)
 app.post("/editDevice/", device.editDevices)
 
 app.post("/searchIP/", IP.searchIP)
+app.post("/searchDisabledIP/", IP.searchDisabledIP)
 app.post("/saveIP/", IP.saveIP);
 app.post("/SearchIPAgency/", IP.SearchIPAgency)
 app.post("/EditAgencias/", IP.EditIp)

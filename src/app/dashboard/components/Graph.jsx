@@ -10,7 +10,7 @@ const Graph = () => {
 	useEffect(()=>{
 		const intervalId = setInterval(async ()=>{
 			try {
-				const res = await fetch("http://localhost:3001/searchIP",{
+				const res = await fetch("http://localhost:3001/searchDisabledIP",{
 				method:'POST',
 				headers: {
 				'Content-Type': 'application/json',
@@ -45,7 +45,8 @@ const Graph = () => {
 	</span>
 	)
   return (
-    <div style={{ maxHeight: '300px', overflowY: 'auto', width:"240px" }}>
+	<div className='grid grid-cols-4 gap-4'>
+		<div style={{ maxHeight: '300px', overflowY: 'auto', width:"240px" }}>
 	<thead>
 		<tr>
 			<th
@@ -69,7 +70,17 @@ const Graph = () => {
 		
 		}
 	</tbody>
-    </div>
+
+	<div>
+	</div>
+    	</div>
+
+		<div>
+			<div>Graph 1</div>
+
+			<div>Graph2</div>
+		</div>
+	</div>
   )
 }
 

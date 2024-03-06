@@ -28,6 +28,16 @@ const searchIP = (request, response) =>{
         } )
 }
 
+const searchDisabledIP = (request, response) =>{
+    pool.query("SELECT * FROM tbl_direcciones_ip where estatus = $1", [2], (error, result)=>{
+            try {
+                response.status(200).json({msg:result.rows})
+            } catch (error) {
+                response.status(500).json({error:"Ha ocurrido un error, por favor intente más tarde"})
+            }
+        } )
+}
+
 const EditIp = (request, response) =>{
     pool.query("")
 }
@@ -41,5 +51,6 @@ module.exports = {
     saveIP,
     searchIP,
     EditIp,
-    SearchIPAgency
+    SearchIPAgency,
+    searchDisabledIP
 }
