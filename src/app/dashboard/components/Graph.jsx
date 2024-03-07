@@ -3,6 +3,7 @@
 import { NextResponse } from 'next/server'
 import { useEffect, useState } from 'react';
 import LoadingPage from './loading';
+import PieNew from './PieChart';
 
 const Graph = () => {
 	const [data, setData] = useState([])
@@ -25,7 +26,6 @@ const Graph = () => {
 		return () => clearInterval(intervalId);
 
 	}, [])
-
 
 	const active = (
 		<span
@@ -76,9 +76,7 @@ const Graph = () => {
     	</div>
 
 		<div>
-			<div>Graph 1</div>
-
-			<div>Graph2</div>
+			<PieNew />
 		</div>
 	</div>
   )
