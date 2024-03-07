@@ -28,6 +28,20 @@ const searchIP = (request, response) =>{
         } )
 }
 
+const searchIPAgency = (request, response) =>{
+
+    const {id_disp} = request.body
+
+    pool.query("SELECT * FROM tbl_direcciones_ip WHERE cod_dispositivo = $1", [id_disp] ,(error, result)=>{
+            try {
+                console.log(result)
+                response.status(200).json({msg:result.rows})
+            } catch (error) {
+                response.status(500).json({error:"Ha ocurrido un error, por favor intente más tarde"})
+            }
+        } )
+}
+
 const searchDisabledIP = (request, response) =>{
     pool.query("SELECT * FROM tbl_direcciones_ip where estatus = $1", [2], (error, result)=>{
             try {
@@ -42,15 +56,11 @@ const EditIp = (request, response) =>{
     pool.query("")
 }
 
-const SearchIPAgency = (request, response) =>{
-
-}
-
 
 module.exports = {
     saveIP,
     searchIP,
     EditIp,
-    SearchIPAgency,
+    searchIPAgency,
     searchDisabledIP
 }
