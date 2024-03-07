@@ -46,10 +46,11 @@ app.post('/resumeAgency', agency.resumeAgency);
 app.post('/addAgencies', agency.addAgency )
 app.post('/searchAgency/', agency.searchAgency);
 app.post('/updAgency', agency.updAgency);
-app.post('/changeStatusAgency/')
+app.post('/changeStatusAgency/', agency.changeStatusAgency)
 
 app.post("/states/", agency.States);
 app.post("/municipalities/", agency.municipalities);
+
 
 
 app.post("/addDevices/", device.addDevices);

@@ -68,15 +68,34 @@ return response.status(401).json({ error: 'Su usuario no tiene suficientes privi
 }
 
 const changeStatusAgency = (request, response) => {
-    const {id_agencia, status} = req.body
+    const {id_agencia, status} = request.body
+
+    console.log(request.body)
 
     let update;
 
-    (status === 1) ? update = 2 : update = 1
+    (status === "Activa") ? update = 2 : update = 1
 
-    pool.query = (`UPDATE public.tbl_datos_agencias
-	SET id_agencia=$2 WHERE id_agencia=$1`, [id_agencia, update])
-
+    pool.query(`UPDATE public.tbl_datos_agencias
+	SET estatus_agencia=$2 WHERE id_agencia=$1`, [id_agencia, update], (error, results) => {
+        if (error) {
+            throw error
+        }
+        if(results.rowCount > 0){
+            pool.query(`UPDATE public.tbl_datos_dispositivos
+	SET estatus=$2 WHERE id_agencia=$1`, [id_agencia, update], (error, results) =>{
+        if (error) {
+            throw error
+        }
+        
+        if(results.rowCount > 0){
+            response.status(200).json({msg: `Se ha ${update === 1 ? "desactivado" : "activado"} la agencia con todos sus dispositivos asociados`})
+        }
+    })
+        } else {
+            response.status(404).json({msg: `No se ha podido desactivar la agencia`})
+        }
+    })
 }
 
 const searchAgency = (request, response) => {
@@ -198,5 +217,6 @@ module.exports = {
     updAgency,
     States,
     municipalities,
-    addAgency
+    addAgency,
+    changeStatusAgency
 }

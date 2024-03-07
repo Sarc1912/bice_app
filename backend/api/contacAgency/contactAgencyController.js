@@ -21,8 +21,8 @@ const saveContact = (request, response) => {
     const {names, lastNames,mail, ci, cel1, cel2, ext, id_a} = request.body
 
     pool.query(`INSERT INTO public.tbl_datos_contacto_agencia(
-    nombres, apellidos, cedula, telefono1, telefono2, extensiondca, id_agencia)
-        VALUES ($1, $2, $3, $4, $5, $6, $7);`, [names, lastNames, ci, cel1, cel2, ext, id_a], (error, resp)=>{
+    nombres, apellidos, cedula, telefono1, telefono2, extensiondca, id_agencia, correo)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`, [names, lastNames, ci, cel1, cel2, ext, id_a, mail], (error, resp)=>{
             try {
                 response.status(200).json({msg:"su contacto ha sido registrado correctamente"})
             } catch (error) {
@@ -34,10 +34,13 @@ const saveContact = (request, response) => {
 const editContact = (request, response) => {
     const {names, lastNames,mail, ci, cel1, cel2, ext, id_a, id_contacto} = request.body
 
+    console.log(request.body)
+
     pool.query(`UPDATE public.tbl_datos_contacto_agencia
-	SET nombres=$1, apellidos=$2, cedula=$3, telefono1=$4, telefono2=$5, extensiondca=$6
-	WHERE id_contacto = $7;`, [names, lastNames, ci, cel1, cel2, ext, id_contacto], (error, resp)=>{
+	SET nombres=$1, apellidos=$2, cedula=$3, telefono1=$4, telefono2=$5, extensiondca=$6, correo=$8
+	WHERE id_contacto = $7;`, [names, lastNames, ci, cel1, cel2, ext, id_contacto, mail], (error, resp)=>{
             try {
+                console.log(resp)
                 response.status(200).json({msg:"su contacto ha sido actualizado correctamente"})
             } catch (error) {
                 response.status(400).json({error:"No se ha podido completar su solicitud", errMes:error})

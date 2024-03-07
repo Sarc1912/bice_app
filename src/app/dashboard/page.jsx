@@ -20,7 +20,6 @@ function Dashboard() {
         },
       })
         const data = await res.json();
-        console.log(data)
         setDown(data)
       } catch (error) {
         console.log(error)

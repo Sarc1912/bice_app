@@ -8,7 +8,7 @@ import Swal from 'sweetalert2'
 const SaveContact = ({id, action, con} ) => {
     const [names, setNames] = useState(con ? con.nombres:"")
     const [lastnames, setLastNames] = useState(con ? con.apellidos:"")
-    const [mail, setMail] = useState("")
+    const [mail, setMail] = useState(con ? con.correo:"")
     const [ci, setCi] = useState(con ? con.cedula:"")
     const [cel1, setCel1] = useState(con ? con.telefono1:"")
     const [cel2, setCel2] = useState(con ? con.telefono2:"")
@@ -39,6 +39,7 @@ const SaveContact = ({id, action, con} ) => {
                 cel1:cel1,
                 cel2:cel2,
                 ext:ext,
+                mail:mail,
                 id_a:id,
                 id_contacto: con ? con.id_contacto : ""
               }),
@@ -154,7 +155,7 @@ const SaveContact = ({id, action, con} ) => {
     <form class="flex" onSubmit={handleSubmit}>
       <input onChange={(e) => setNames(e.target.value)} value={names} maxLength="50" class="rounded border focus:border-red-700 focus:shadow-md m-1" type="text" placeholder="Nombres" required style={{ width:"200px" }} />
       <input onChange={(e) => setLastNames(e.target.value)} value={lastnames} maxLength="25" class="rounded border focus:border-red-700 focus:shadow-md m-1" type="text" placeholder="Apellidos" required style={{ width:"200px" }} />
-      <input onChange={(e) => setMail(e.target.value)} value={mail} maxLength="25" class="rounded border focus:border-red-700 focus:shadow-md m-1" type="email" placeholder="Correo" required style={{ width:"200px" }} />
+      <input onChange={(e) => setMail(e.target.value)} value={mail} maxLength="501" class="rounded border focus:border-red-700 focus:shadow-md m-1" type="email" placeholder="Correo" required style={{ width:"200px" }} />
       <input onChange={(e)=>handleChange(e, setCi)} value={ci} maxLength="8" class="rounded border focus:border-red-700 focus:shadow-md m-2 p-2" type="text" placeholder="Cedula" required style={{ width:"100px" }} />
       <input onChange={(e)=>handleChange(e, setCel1)} value={cel1} maxLength="11" class="rounded border focus:border-red-700 focus:shadow-md m-2 p-2 " type="text" placeholder="Celular 1" required style={{ width:"130px" }} />
       <input onChange={(e)=>handleChange(e, setCel2)} value={cel2} maxLength="11" class="rounded border focus:border-red-700 focus:shadow-md m-2 p-2 " type="text" placeholder="Celular 2" style={{ width:"130px" }} />

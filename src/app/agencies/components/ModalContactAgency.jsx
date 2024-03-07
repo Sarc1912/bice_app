@@ -1,27 +1,35 @@
+"use client"
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import SaveContact from './SaveContact'
 
-async function consultContact (id){
-    const res = await fetch("http://localhost:3001/contacts",{
-		method:'POST',
-		headers: {
-		  'Content-Type': 'application/json',
-		},
-		body: JSON.stringify({
-		  id_agencia: id,
-		}),
-	  })
-	
-	  const data = await res.json();
+
+function ModalContactAgency({ isOpen, onOpenChange, agency }) {
+  const [data, setData] = useState()
+
+  useEffect(() => {
+    async function consultContact(id) {
+      const res = await fetch("http://localhost:3001/contacts", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id_agencia: id,
+        }),
+      });
+
+      const data = await res.json();
       return data.data;
-}
+    }
 
+    if (agency.id_agencia !== null) {
+      consultContact(agency.id_agencia).then(data => {
+        setData(data);
+      });
+    }
+  }, [agency.id_agencia]); // Se ejecuta cada vez que 'id' cambia
 
-
-async function ModalContactAgency({ isOpen, onOpenChange, agency }) {
-
-    const data = await consultContact(agency.id_agencia)
 
   return (
     <Modal className='bg-black text-black rounded-t-md'

@@ -39,7 +39,7 @@ function Agency({params}) {
       
       if(data.error){
         Swal.fire({
-          title: "No se jan cargado los datos correctamente",
+          title: "No se han cargado los datos correctamente",
           icon: 'error',
           confirmButtonText: 'Cerrar'
         })}
