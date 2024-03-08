@@ -10,6 +10,7 @@ function Dashboard() {
   const [user, setUser] = useState("")
   const [agencies, setAgencies] = useState("")
 
+
   useEffect(()=>{
     const getData = async () =>{
       try {
@@ -27,6 +28,8 @@ function Dashboard() {
     }
     getData()
   }, [])
+
+
 
   useEffect(() => {
     const loadUsers = async () => {

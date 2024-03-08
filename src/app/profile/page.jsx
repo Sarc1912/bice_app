@@ -53,10 +53,18 @@ function page() {
                         type="text" value={user.cargo}  readonly/>
                 </div>
         </div>
-        <div className="md:col-span-3 h-48 shadow-xl p-4 space-y-2 hidden md:block">
+        <div className="md:col-span-3 h-50 shadow-xl p-4 space-y-2 hidden md:block">
             <h3 className="font-bold uppercase text-black"> Descripcion del Perfil</h3>
             <p className="text-black"> 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eget laoreet diam, id luctus lectus. Ut consectetur nisl ipsum, et faucibus sem finibus vitae. Maecenas aliquam dolor at dignissim commodo. Etiam a aliquam tellus, et suscipit dolor. Proin auctor nisi velit, quis aliquet sapien viverra a. 
+            <h2>Responsabilidades clave de un Gerente de Telecomunicaciones:</h2>
+              <ol>
+                  <li><strong>Gestión y Supervisión de Sistemas de Telecomunicaciones</strong>: Se encargan de la gestión, supervisión y asesoramiento técnico sobre sistemas de telecomunicaciones.</li>
+                  <li><strong>Identificación de Necesidades y Requisitos</strong>: Reciben comentarios, identifican las necesidades y los requisitos de los usuarios y movilizan la tecnología existente para cumplir con sus criterios.</li>
+                  <li><strong>Mantenimiento de Registros</strong>: Mantienen registros sobre la instalación, reparación y reemplazo de equipos.</li>
+                  <li><strong>Investigación de Desarrollos Tecnológicos</strong>: Investigan desarrollos en tecnología de telecomunicaciones.</li>
+                  <li><strong>Consultas a Proveedores y Departamentos de Ventas</strong>: Consultan a proveedores y departamentos de ventas sobre nuevos productos y actualizaciones.</li>
+              </ol>
+              <p>Es importante tener en cuenta que las responsabilidades específicas pueden variar dependiendo de la organización y el alcance del rol. Además, este rol puede requerir habilidades de liderazgo, ya que a menudo implica la supervisión de un equipo de trabajo.</p>
             </p>
         </div>
             

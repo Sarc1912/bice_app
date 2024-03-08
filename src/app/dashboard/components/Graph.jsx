@@ -27,6 +27,8 @@ const Graph = () => {
 
 	}, [])
 
+
+
 	const active = (
 		<span
 		class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
@@ -45,8 +47,8 @@ const Graph = () => {
 	</span>
 	)
   return (
-	<div className='grid grid-cols-4 gap-4'>
-		<div style={{ maxHeight: '300px', overflowY: 'auto', width:"240px" }}>
+	<div className='grid grid-cols-4 gap-4 '>
+		<div style={{ maxHeight: '450px', overflowY: 'auto', width:"230px" }} className='rounded-lg shadow-lg shadow-red-600 '>
 	<thead>
 		<tr>
 			<th
@@ -61,7 +63,7 @@ const Graph = () => {
 	</thead>
 	<tbody>
 		{data && data.length > 0 ? data.map(disp =>(
-		<tr>
+		<tr key={disp.direccion_ip}>
 			<td className="px-3 py-5 border-b border-gray-200 bg-white text-sm text-black" >{disp.datos_ip}</td>
 			<td className="px-3 py-5 border-b border-gray-200 bg-white text-sm text-black" >{disp.estatus === 1 ? active : inactive}</td>
 		</tr>
@@ -77,6 +79,9 @@ const Graph = () => {
 
 		<div>
 			<PieNew />
+		</div>
+
+		<div className='imgParaLLenarEspacio rounded-lg'>
 		</div>
 	</div>
   )
