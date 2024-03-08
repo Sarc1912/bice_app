@@ -113,14 +113,14 @@ function ModalIp({ isOpen, onOpenChange, dispo }) {
 
                 <div>
                   <button className="hover:shadow-form rounded-md bg-red-700 py-3 px-8 text-center text-black font-semibold text-white outline-none">
-                    Submit
+                    Guardar
                   </button>
                 </div>
               </form>
             </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="light" onPress={onClose}>
-                Close
+                Cerrar
               </Button>
             </ModalFooter>
           </>
